@@ -1,3 +1,9 @@
+.topbar {
+  background: #3a3a3a;
+  color: #fff;
+  padding: 8px 0;
+  font-size: 0.9em;
+}
 
 .topbar {
   background: #3a3a3a;
@@ -31,7 +37,6 @@
   color: #c1e231;
   font-size: 1.1em;
 }
-
 * {
   margin: 0;
   padding: 0;
