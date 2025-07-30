@@ -5,14 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>1 Jarosławska Drużyna Harcerska „Pościg”</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="img/logo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
+
+  <!-- Pasek kontaktowy na górze -->
   <header class="topbar">
-    <div class="container">
-      <p><strong>📍</strong> Jarosław • <strong>✉️</strong> <a href="mailto:poscig@zhr.pl">poscig@zhr.pl</a></p>
+    <div class="container topbar-content">
+      <div class="topbar-left">
+        <i class="fas fa-home"></i>
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Plac Skargi 3, 37-500 Jarosław</span>
+      </div>
+      <div class="topbar-right">
+        <span>e-mail: <a href="mailto:poscig@zhr.pl">poscig@zhr.pl</a></span>
+        <a href="mailto:poscig@zhr.pl"><i class="fas fa-envelope"></i></a>
+        <a href="https://facebook.com"><i class="fab fa-facebook-square"></i></a>
+      </div>
     </div>
   </header>
+
+  <!-- Komponenty ładowane dynamicznie -->
+  <div id="header"></div>
 
   <nav class="navbar">
     <div class="container">
@@ -50,10 +66,8 @@
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 1JDH „Pościg” • ZHR • Wykonanie:</p>
-    </div>
-  </footer>
+  <div id="footer"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
