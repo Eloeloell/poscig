@@ -37,6 +37,18 @@
   color: #c1e231;
   font-size: 1.1em;
 }
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar-brand img {
+  width: 60px;
+  height: auto;
+}
+
 * {
   margin: 0;
   padding: 0;
