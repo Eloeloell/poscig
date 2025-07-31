@@ -1,12 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const include = (selector, file) => {
-    fetch(`components/${file}`)
-      .then(res => res.text())
-      .then(data => {
-        document.querySelector(selector).outerHTML = data;
-      });
-  };
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("components/header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
 
-  include("#header", "header.html");
-  include("#footer", "footer.html");
+  fetch("components/footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
 });
