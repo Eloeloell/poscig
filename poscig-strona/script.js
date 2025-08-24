@@ -7,5 +7,5 @@ document.addEventListener("DOMContentLoaded", () => {
 };
 
   loadComponent("header", "components/header.html");
-  loadComponent("header", "components/header.html");
+  loadComponent("footer", "components/footer.html");
 });
