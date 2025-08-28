@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kontakt – 1. Jarosławska Drużyna Harcerzy „Pościg”</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../img/logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      main.kontakt {
+        background: #fff;
+        padding: 50px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin: 40px auto;
+        max-width: 900px;
+      }
+      main.kontakt h1 {
+        font-size: 2.2rem;
+        color: #004d00;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      main.kontakt p {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 25px;
+      }
+      .kontakt-box {
+        background: #f9f9f9;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease;
+      }
+      .kontakt-box:hover {
+        transform: translateY(-4px);
+      }
+      .kontakt-box h2 {
+        color: #004d00;
+        margin-bottom: 12px;
+        font-size: 1.5rem;
+      }
+      .kontakt-box p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+      .kontakt-box a {
+        color: #007b33;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .kontakt-box a:hover {
+        color: #88c000;
+      }
+      @media (max-width: 768px) {
+        main.kontakt {
+          padding: 30px 15px;
+        }
+        .kontakt-box {
+          padding: 20px;
+        }
+        main.kontakt h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+
+    <main class="container kontakt">
+      <h1>Kontakt</h1>
+      <p>Masz pytania? Skontaktuj się z nami:</p>
+
+      <div class="kontakt-box">
+        <h2>Drużynowy</h2>
+        <p><strong>pwd. Jan Kowalski</strong></p>
+        <p>📞 123 456 789</p>
+        <p>✉️ <a href="mailto:kontakt@druzyna.pl">kontakt@druzyna.pl</a></p>
+      </div>
+
+      <div class="kontakt-box">
+        <h2>Miejsce zbiórek</h2>
+        <p>Harcówka, ul. Leśna 12<br />37-500 Jarosław</p>
+        <div class="map-placeholder">
+          <p>
+            <a
+              href="https://maps.google.com/?q=Harcówka, Jarosław"
+              target="_blank"
+              >Zobacz na mapie</a
+            >
+          </p>
+        </div>
+      </div>
+
+      <div class="kontakt-box">
+        <h2>Media społecznościowe</h2>
+        <p>
+          <a href="#">Facebook</a> | <a href="#">Instagram</a> |
+          <a href="#">YouTube</a>
+        </p>
+      </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loadComponent = (id, file) => {
+          fetch(file)
+            .then((res) => {
+              if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+              return res.text();
+            })
+            .then((data) => {
+              const el = document.getElementById(id);
+              if (el) el.innerHTML = data;
+            })
+            .catch((err) =>
+              console.error(`Nie udało się załadować ${file}:`, err)
+            );
+        };
+
+        loadComponent("header", "../components/header.html");
+        loadComponent("footer", "../components/footer.html");
+      });
+    </script>
+  </body>
+</html>
