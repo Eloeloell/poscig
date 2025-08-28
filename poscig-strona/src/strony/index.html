@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1 Jarosławska Drużyna Harcerska „Pościg”</title>
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="img/logo.png" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../../public/img/logo.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap"
       rel="stylesheet"
@@ -17,6 +17,9 @@
     />
   </head>
   <body>
+    <div id="loader">
+      <div class="loader-spinner"></div>
+    </div>
     <div id="header"></div>
 
     <section class="hero">
@@ -63,7 +66,7 @@
         <h2>Aktualności</h2>
         <div class="news-container">
           <article class="news-card">
-            <img src="img/hero3.jpg" alt="OpisZdj" />
+            <img src="../../public/img/hero3.jpg" alt="OpisZdj" />
             <div class="news-content">
               <h3>Naglowek</h3>
               <p class="date">Data</p>
@@ -152,6 +155,14 @@
 
     <div id="footer"></div>
 
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+          loader.classList.add("hidden");
+        }
+      });
+    </script>
   </body>
 </html>

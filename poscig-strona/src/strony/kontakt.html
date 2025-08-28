@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="icon" href="../img/logo.png" />
     <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
@@ -31,34 +35,58 @@
         color: #444;
         margin-bottom: 25px;
       }
-      .kontakt-box {
-        background: #f9f9f9;
-        border-radius: 10px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease;
+
+      .kontakt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
       }
+
+      .kontakt-box {
+        padding: 1.5rem;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
       .kontakt-box:hover {
         transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       }
+
       .kontakt-box h2 {
-        color: #004d00;
-        margin-bottom: 12px;
-        font-size: 1.5rem;
+        color: #006400;
+        margin-bottom: 0.5rem;
       }
+
       .kontakt-box p {
-        margin-bottom: 10px;
-        font-size: 1rem;
+        margin: 0.5rem 0;
       }
-      .kontakt-box a {
-        color: #007b33;
+
+      .contact-link {
+        display: block;
+        margin: 0.5rem 0;
+        color: #006400;
         font-weight: 600;
         text-decoration: none;
-        transition: color 0.2s ease;
+        transition: color 0.3s;
       }
-      .kontakt-box a:hover {
-        color: #88c000;
+
+      .contact-link i {
+        margin-right: 8px;
+        color: #444;
+      }
+
+      .contact-link:hover {
+        color: #228b22;
+      }
+
+      a {
+        text-align: center;
+        position: relative;
       }
       @media (max-width: 768px) {
         main.kontakt {
@@ -74,6 +102,9 @@
     </style>
   </head>
   <body>
+    <div id="loader">
+      <div class="loader-spinner"></div>
+    </div>
     <div id="header"></div>
 
     <main class="container kontakt">
@@ -82,18 +113,31 @@
 
       <div class="kontakt-box">
         <h2>Drużynowy</h2>
-        <p><strong>pwd. Jan Kowalski</strong></p>
-        <p>📞 123 456 789</p>
-        <p>✉️ <a href="mailto:kontakt@druzyna.pl">kontakt@druzyna.pl</a></p>
+        <p><strong>pwd. Patryk Olech HR</strong></p>
+        <a href="tel:+48822755901" class="contact-link phone">
+          <i class="fa-solid fa-phone"></i> +48 882 755 901
+        </a>
+        <a href="mailto:patryk.olech@zhr.pl" class="contact-link email">
+          <i class="fa-solid fa-envelope"></i> patryk.olech@zhr.pl
+        </a>
       </div>
 
       <div class="kontakt-box">
         <h2>Miejsce zbiórek</h2>
-        <p>Harcówka, ul. Leśna 12<br />37-500 Jarosław</p>
+        <p>Harcówka, ul. Plac Skargi 3<br />37-500 Jarosław</p>
         <div class="map-placeholder">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d460.31788534206186!2d22.682052341677895!3d50.02025487847249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473c9bd9da6573a3%3A0xef17ffdee5484463!2splac%20Skargi%203%2C%2037-500%20Jaros%C5%82aw!5e1!3m2!1sen!2spl!4v1756399988698!5m2!1sen!2spl"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
           <p>
             <a
-              href="https://maps.google.com/?q=Harcówka, Jarosław"
+              href="https://maps.google.com/?q=Plac Skargi 3, Jarosław"
               target="_blank"
               >Zobacz na mapie</a
             >
@@ -104,7 +148,10 @@
       <div class="kontakt-box">
         <h2>Media społecznościowe</h2>
         <p>
-          <a href="#">Facebook</a> | <a href="#">Instagram</a> |
+          <a href="https://www.facebook.com/1JDHPoscig" target="_blank"
+            >Facebook</a
+          >
+          <a href="#">Instagram</a> |
           <a href="#">YouTube</a>
         </p>
       </div>
@@ -131,6 +178,14 @@
 
         loadComponent("header", "../components/header.html");
         loadComponent("footer", "../components/footer.html");
+      });
+    </script>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+          loader.classList.add("hidden");
+        }
       });
     </script>
   </body>
