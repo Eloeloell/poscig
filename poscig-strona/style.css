@@ -59,12 +59,6 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.navbar .content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .navbar-brand {
   display: flex;
   align-items: center;
@@ -120,7 +114,8 @@ body {
   background-image: url("img/hero2.jpg");
   background-size: cover;
   background-position: center;
-  height: 400px;
+  background-attachment: fixed;
+  height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,7 +132,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0, 0, 0, 0.55);
 }
 
 .hero-content {
@@ -232,11 +227,11 @@ footer .copy {
   }
 
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .hero p {
-    font-size: 1.2rem;
+    font-size: 0.7rem;
   }
 
   .topbar-content {
@@ -327,4 +322,68 @@ footer .copy {
 
 .contact-info a:hover {
   color: #88c000;
+}
+
+#o-nas {
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 40px;
+}
+
+#o-nas h2 {
+  font-size: 2rem;
+  color: #004d00;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+#o-nas h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background-color: #88c000;
+  border-radius: 2px;
+}
+
+#o-nas p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+#o-nas ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#o-nas li {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  position: relative;
+  padding-left: 28px;
+}
+
+#o-nas strong {
+  color: #004d00;
+}
+
+.onas-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.onas-list li {
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+}
+
+.onas-list i {
+  color: #88c000;
+  margin-right: 10px;
 }
