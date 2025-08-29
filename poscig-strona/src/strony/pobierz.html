@@ -1,3 +1,56 @@
-<div id="loader">
-  <div class="loader-spinner"></div>
-</div>
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rodzice – 1. Jarosławska Drużyna Harcerzy „Pościg”</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../../public/img/logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="loader">
+      <div class="loader-spinner"></div>
+    </div>
+    <div id="header"></div>
+    <h2>Strona</h2>
+    <div id="footer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loadComponent = (id, file) => {
+          fetch(file)
+            .then((res) => {
+              if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+              return res.text();
+            })
+            .then((data) => {
+              const el = document.getElementById(id);
+              if (el) el.innerHTML = data;
+            })
+            .catch((err) =>
+              console.error(`Nie udało się załadować ${file}:`, err)
+            );
+        };
+
+        loadComponent("header", "../components/header.html");
+        loadComponent("footer", "../components/footer.html");
+      });
+    </script>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+          loader.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

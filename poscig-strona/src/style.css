@@ -421,3 +421,7 @@ footer .copy {
   color: #88c000;
   margin-right: 10px;
 }
+
+html {
+  overflow-y: scroll;
+}
