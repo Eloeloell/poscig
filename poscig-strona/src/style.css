@@ -275,6 +275,7 @@ footer .copy {
   }
 }
 
+.ekwipunek-container,
 .rodzice-container,
 .news-container {
   display: grid;
@@ -283,6 +284,7 @@ footer .copy {
   margin-top: 20px;
 }
 
+.ekwipunek-card,
 .rodzice-card,
 .news-card {
   background: #fff;
@@ -294,11 +296,13 @@ footer .copy {
   transition: transform 0.2s ease;
 }
 
+.ekwipunek-card:hover,
 .rodzice-card:hover,
 .news-card:hover {
   transform: translateY(-5px);
 }
 
+.ekwipunek-card img,
 .rodzice-card img,
 .news-card img {
   width: 100%;
@@ -306,6 +310,7 @@ footer .copy {
   object-fit: cover;
 }
 
+.ekwipunek-content,
 .rodzice-content,
 .news-content {
   padding: 15px;
@@ -314,12 +319,15 @@ footer .copy {
   flex: 1;
 }
 
+.ekwipunek-content h3,
 .rodzice-content h3,
 .news-content h3 {
   color: #004d00;
   margin-bottom: 8px;
   font-size: 1.2rem;
 }
+
+.ekwipunek-content .date,
 .rodzice-content .date,
 .news-content .date {
   font-size: 0.9rem;
@@ -327,6 +335,7 @@ footer .copy {
   margin-bottom: 10px;
 }
 
+.ekwipunek-content p,
 .rodzice-content p,
 .news-content p {
   flex-grow: 1;
