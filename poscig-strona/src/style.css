@@ -433,6 +433,7 @@ html {
   overflow-y: scroll;
 }
 
+.skladki-container h2,
 .rodzice-section h2 {
   text-align: center;
   font-size: 2.2rem;
@@ -443,6 +444,7 @@ html {
   padding-bottom: 10px;
 }
 
+.skladki-container h2::after,
 .rodzice-section h2::after {
   content: "";
   position: absolute;
