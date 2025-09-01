@@ -465,3 +465,86 @@ html {
   background-color: #88c000;
   border-radius: 2px;
 }
+
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+    padding: 40px 15px;
+    background-attachment: scroll;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  main section {
+    margin: 25px 0;
+    padding: 0 10px;
+  }
+
+  #o-nas {
+    padding: 20px;
+  }
+
+  .ekwipunek-container,
+  .rodzice-container,
+  .news-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .topbar-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .nav-links {
+    width: 100%;
+    gap: 15px;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: auto;
+    padding: 30px 10px;
+  }
+
+  .hero h1 {
+    font-size: 1.4rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 10px 18px;
+  }
+
+  #o-nas h2 {
+    font-size: 1.5rem;
+  }
+
+  #o-nas p,
+  .onas-list li,
+  .contact p {
+    font-size: 0.95rem;
+  }
+
+  footer {
+    font-size: 0.9rem;
+    padding: 15px 0;
+  }
+}
