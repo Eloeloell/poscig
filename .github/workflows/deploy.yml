@@ -21,3 +21,6 @@ jobs:
           protocol: ftps # jeśli nie działa, zmień na "ftp" albo "sftp"
           port: ${{ secrets.FTP_PORT }} # możesz dodać secret FTP_PORT = 21 albo 22
           server-dir: /public_html/ # <- tu zazwyczaj trafia strona na CyberFolks
+          protocol: ftps
+          passive: true
+          retries: 3
