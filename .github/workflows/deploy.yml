@@ -12,14 +12,44 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Upload via FTP
+      - name: Upload root folder via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp # or ftps if your server requires TLS
-          port: ${{ secrets.FTP_PORT }} # 21 for FTP, 990 for FTPS
+          protocol: ftps
+          security: explicit
+          port: 21
           server-dir: /public_html/
+          local-dir: ./dist
+          timeout: 180
+          log-level: verbose
+
+      - name: Upload images folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: explicit
+          port: 21
+          server-dir: /public_html/images/
+          local-dir: ./dist/images
+          timeout: 180
+          log-level: verbose
+
+      - name: Upload css folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          security: explicit
+          port: 21
+          server-dir: /public_html/css/
+          local-dir: ./dist/css
           timeout: 180
           log-level: verbose
