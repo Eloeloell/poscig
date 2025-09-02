@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          security: explicit
+          security: strict
           port: 21
           server-dir: /public_html/images/
           local-dir: ./dist/images
@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          security: explicit
+          security: strict
           port: 21
           server-dir: /public_html/css/
           local-dir: ./dist/css
