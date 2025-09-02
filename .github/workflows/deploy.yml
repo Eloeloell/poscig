@@ -21,6 +21,5 @@ jobs:
           protocol: ftp # or ftps if your server requires TLS
           port: ${{ secrets.FTP_PORT }} # 21 for FTP, 990 for FTPS
           server-dir: /public_html/
-          dangerous-clean-slate: true
-          timeout: 60
+          timeout: 180
           log-level: verbose
