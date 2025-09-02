@@ -18,7 +18,9 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp # jeśli nie działa, zmień na "ftp" albo "sftp"
-          port: ${{ secrets.FTP_PORT }} # możesz dodać secret FTP_PORT = 21 albo 22
-          server-dir: /public_html/ # <- tu zazwyczaj trafia strona na CyberFolks
-          passive: true
+          protocol: ftp # plain FTP, change to "ftps" if server requires TLS
+          port: ${{ secrets.FTP_PORT }} # usually 21 for FTP, 990 for FTPS
+          server-dir: /public_html/
+          dangerous-clean-slate: true # optional: clears remote files before upload
+          timeout: 60 # increase timeout to avoid FIN packet errors
+          log-level: info # optional: see detailed logs
