@@ -556,3 +556,123 @@ html {
   visibility: visible;
   transform: translateY(0);
 }
+
+.topbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  font-size: 0.95rem;
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .topbar-content {
+    font-size: 0.85rem;
+    padding: 0 8px;
+  }
+
+  .topbar-left span,
+  .topbar-right span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+  }
+
+  .topbar-right {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-content {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .topbar-left span,
+  .topbar-right span {
+    max-width: 120px;
+  }
+
+  .topbar-right a i {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-left span {
+    display: none;
+  }
+
+  .topbar-left::after {
+    content: "Plac Skargi 3";
+    font-size: 0.85rem;
+    color: #fff;
+  }
+
+  .topbar-right span {
+    display: none;
+  }
+
+  .topbar-right::before {
+    content: "poscig.pdk@zhr.pl";
+    font-size: 0.85rem;
+    color: #fff;
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 15px 10px;
+  }
+
+  footer .org {
+    font-size: 1rem;
+  }
+
+  footer .druzyna {
+    font-size: 0.95rem;
+  }
+
+  footer .hufiec,
+  footer .choragiew {
+    font-size: 0.85rem;
+  }
+
+  footer .copy {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+    padding: 10px 8px;
+  }
+
+  footer .org {
+    font-size: 0.9rem;
+  }
+
+  footer .druzyna {
+    font-size: 0.85rem;
+  }
+
+  footer .hufiec,
+  footer .choragiew {
+    font-size: 0.8rem;
+  }
+
+  footer .copy {
+    font-size: 0.7rem;
+  }
+}
