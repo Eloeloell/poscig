@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rodzice – 1. Jarosławska Drużyna Harcerzy „Pościg”</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="icon" href="../../public/img/logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      h1 {
+        color: #004d00;
+        margin-bottom: 15px;
+        text-align: center;
+        font-size: 2rem;
+      }
+
+      h2 {
+        color: #004d00;
+        margin-bottom: 15px;
+        text-align: center;
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loader">
+      <div class="loader-spinner"></div>
+    </div>
+    <div id="header"></div>
+
+    <section id="zastepy" class="zastepy-section container">
+      <h1>Zastępy</h1>
+      <h2>Obecnie działajace zastępy w Pościgu</h2>
+      <div class="zastepy-container">
+        <article class="zastepy-card">
+          <img src="../../public/img/POL_COA_Doliwa.png" alt="" />
+          <div class="zastepy-content">
+            <h3>Zastęp Herbu Doliwa</h3>
+            <a href="ekwipunek-obozowy.html" class="btn">Zobacz więcej</a>
+          </div>
+        </article>
+
+        <article class="zastepy-card">
+          <img src="../../public/img/POL_COA_Szeliga.png" alt="" />
+          <div class="zastepy-content">
+            <h3>Zastęp Herbu Szeliga</h3>
+            <a href="ekwipunek-obozowy.html" class="btn">Zobacz więcej</a>
+          </div>
+        </article>
+
+        <article class="zastepy-card">
+          <img src="../../public/img/POL_COA_Krzywda.png" alt="" />
+          <div class="zastepy-content">
+            <h3>Zastęp Herbu Krzywda</h3>
+            <a href="ekwipunek-obozowy.html" class="btn">Zobacz więcej</a>
+          </div>
+        </article>
+
+        <article class="zastepy-card">
+          <img src="../../public/img/Herb_Korsak.jpg" alt="" />
+          <div class="zastepy-content">
+            <h3>Zastęp Herbu Korsak</h3>
+            <a href="ekwipunek-obozowy.html" class="btn">Zobacz więcej</a>
+          </div>
+        </article>
+
+        <article class="zastepy-card">
+          <img src="../../public/img/POL_COA_Gozdawa.png" alt="gozdawa" />
+          <div class="zastepy-content">
+            <h3>Zastęp Herbu Gozdawa</h3>
+            <a href="ekwipunek-obozowy.html" class="btn">Zobacz więcej</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div id="footer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loadComponent = (id, file) => {
+          fetch(file)
+            .then((res) => {
+              if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+              return res.text();
+            })
+            .then((data) => {
+              const el = document.getElementById(id);
+              if (el) el.innerHTML = data;
+            })
+            .catch((err) =>
+              console.error(`Nie udało się załadować ${file}:`, err)
+            );
+        };
+
+        loadComponent("header", "../components/header.html");
+        loadComponent("footer", "../components/footer.html");
+      });
+    </script>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+          loader.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>
