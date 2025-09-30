@@ -1,9 +1,45 @@
 <!DOCTYPE html>
 <html lang="pl">
   <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-5S26FVF6");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Google Stats-->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-2LW2JGNRRE"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-2LW2JGNRRE");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1 Jarosławska Drużyna Harcerska „Pościg”</title>
+    <title>1 Jarosławska Drużyna Harcerzy „Pościg” – Strona Główna</title>
+    <meta
+      name="description"
+      content="Oficjalna strona 1. Jarosławskiej Drużyny Harcerzy „Pościg” im. Jana III Sobieskiego. Poznaj naszą historię, działalność i skontaktuj się z drużyną."
+    />
+    <meta
+      name="keywords"
+      content="ZHR, harcerstwo, Podkarpacie, Okręg Podkarpacki, Rzeszów, Jarosław, 1 Jarosławska Drużyna Harcerzy, Pościg"
+    />
     <link rel="stylesheet" href="../style.css" />
     <link rel="icon" href="../../public/img/logo.png" />
     <link
@@ -22,6 +58,17 @@
     <link rel="apple-touch-icon" href="/favicon.png" />
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5S26FVF6"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="loader">
       <div class="loader-spinner"></div>
     </div>
@@ -153,7 +200,7 @@
 
     <div id="footer"></div>
 
-    <script src="../script.js"></script>
+    <script src="script.js"></script>
     <script>
       window.addEventListener("load", () => {
         const loader = document.getElementById("loader");

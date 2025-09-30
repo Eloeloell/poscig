@@ -687,3 +687,9 @@ html {
     display: flex;
   }
 }
+@media screen and (max-width: 767px) {
+  iframe[src*="google.com/maps"] {
+    width: 100% !important;
+    height: 500px;
+  }
+}
