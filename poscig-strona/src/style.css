@@ -250,6 +250,15 @@ footer .copy {
   color: #aaa;
 }
 
+.funkcyjni-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 25px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
 .zastepy-container,
 .ekwipunek-container,
 .rodzice-container,
@@ -260,7 +269,20 @@ footer .copy {
   margin-top: 30px;
 }
 
+.funkcyjni-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  text-align: center;
+}
 .zastepy-card {
+  max-width: 350px;
+  object-fit: contain;
   background: #fff;
   border-radius: 15px;
   overflow: hidden;
@@ -269,12 +291,17 @@ footer .copy {
   display: flex;
   flex-direction: column;
 }
-
+.funkcyjni-card:hover,
 .zastepy-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
-
+.funkcyjni-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
 .zastepy-card img {
   max-height: 180px;
   object-fit: contain;
@@ -283,17 +310,19 @@ footer .copy {
   padding: 15px;
 }
 
+.funkcyjni-content,
 .zastepy-content {
   padding: 18px;
   text-align: center;
 }
-
+.funkcyjni-content h3,
 .zastepy-content h3 {
   color: #004d00;
   margin-bottom: 10px;
   font-size: 1.2rem;
 }
 
+.funkcyjni-content a:hover,
 .zastepy-content a:hover {
   color: #004d00;
 }
