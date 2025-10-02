@@ -722,3 +722,128 @@ html {
     height: 500px;
   }
 }
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+.funkcyjni-section h1 {
+  color: #004d00;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-align: center;
+}
+.funkcyjni-section h2 {
+  color: #555;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.funkcyjni-card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transition: transform 0.32s cubic-bezier(0.22, 0.9, 0.39, 1),
+    box-shadow 0.32s ease;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  text-align: center;
+}
+
+.funkcyjni-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.funkcyjni-content {
+  padding: 18px;
+}
+.funkcyjni-content h3 {
+  font-size: 1.26rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+.funkcja {
+  color: #004d00;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+.data {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+.funkcyjni-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+}
+
+.role-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.role-badge.krzywda {
+  background: #e74c3c;
+}
+.role-badge.doliwa {
+  background: #24aae2;
+}
+.role-badge.korsak {
+  background: #636363;
+}
+
+@media (max-width: 768px) {
+  .funkcyjni-card {
+    width: 100%;
+    max-width: 520px;
+  }
+  .funkcyjni-card img {
+    height: 220px;
+  }
+}
+@media (max-width: 480px) {
+  .funkcyjni-card img {
+    height: 200px;
+  }
+  .funkcyjni-section h1 {
+    font-size: 1.6rem;
+  }
+  .funkcyjni-section h2 {
+    font-size: 1rem;
+  }
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.funkcyjni-card {
+  animation: cardFadeUp 420ms ease both;
+}
