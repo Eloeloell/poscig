@@ -26,14 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
-  loadComponent("header", "../components/header.html")
+  loadComponent("header", "/poscig-strona/src/components/header.html")
     .then(headerEl => {
       console.log("Header loaded");
       initNavigation(headerEl);
     })
     .catch(() => {});
 
-  loadComponent("footer", "../components/footer.html").catch(() => {});
+  loadComponent("footer", "/poscig-strona/src/components/footer.html").catch(() => {});
   
   function initNavigation(headerEl) {
     const burger = headerEl.querySelector(".burger");

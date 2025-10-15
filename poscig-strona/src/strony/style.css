@@ -147,7 +147,7 @@ body {
 }
 
 .hero {
-  background-image: url("../public/img/hero2.jpg");
+  background-image: url("../../public/img/hero2.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
