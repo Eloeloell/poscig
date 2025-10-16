@@ -214,49 +214,114 @@ h2 {
 }
 
 footer {
-  background: #222;
+  background: #1a1a18;
   color: #fff;
   text-align: center;
-  padding: 25px 0;
+  padding: 30px 0;
   line-height: 1.6;
 }
 
+footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+footer .container img {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+footer .logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+footer .container img:hover {
+  transform: scale(1.05);
+}
+
 footer .org {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-top: 10px;
 }
 
 footer .druzyna {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 8px;
 }
 
-footer .hufiec {
-  font-size: 0.95rem;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-
+footer .hufiec,
 footer .choragiew {
   font-size: 0.95rem;
   font-weight: 500;
-  margin-bottom: 12px;
 }
 
 footer .copy {
   font-size: 0.8rem;
   color: #aaa;
+  margin-top: 6px;
 }
 
-.funkcyjni-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 25px;
-  margin-top: 30px;
-  flex-wrap: wrap;
+@media (max-width: 768px) {
+  footer .container img {
+    height: 90px;
+  }
+
+  footer .logos {
+    gap: 25px;
+  }
+
+  footer .org {
+    font-size: 1.05rem;
+  }
+
+  footer .druzyna {
+    font-size: 0.95rem;
+  }
+
+  footer .hufiec,
+  footer .choragiew {
+    font-size: 0.85rem;
+  }
+
+  footer .copy {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  footer .container img {
+    height: 70px;
+  }
+
+  footer .logos {
+    gap: 15px;
+  }
+
+  footer .org {
+    font-size: 1rem;
+  }
+
+  footer .druzyna {
+    font-size: 0.9rem;
+  }
+
+  footer .hufiec,
+  footer .choragiew {
+    font-size: 0.8rem;
+  }
+
+  footer .copy {
+    font-size: 0.7rem;
+  }
 }
 
 .zastepy-container,
