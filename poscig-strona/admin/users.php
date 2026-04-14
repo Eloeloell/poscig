@@ -9,7 +9,7 @@ require __DIR__ . '/../config/db.php';
 $currentRole = (string) ($_SESSION['role'] ?? '');
 if (!can_manage_all_profiles($currentRole)) {
     http_response_code(403);
-    exit('Brak dostepu');
+    exit('Brak dostępu');
 }
 
 $isAdmin = $currentRole === 'admin';
@@ -22,7 +22,7 @@ $currentId = (int) ($_SESSION['user_id'] ?? 0);
 
 <head>
     <meta charset="UTF-8">
-    <title>Zarzadzanie uzytkownikami</title>
+    <title>Zarządzanie użytkownikami</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -35,7 +35,7 @@ $currentId = (int) ($_SESSION['user_id'] ?? 0);
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Uzytkownicy</h2>
+                    <h2 class="admin-title">Użytkownicy</h2>
                     <p class="admin-subtitle">Profile, role i stopnie.</p>
                 </div>
                 <?php if ($isAdmin): ?>
@@ -48,7 +48,7 @@ $currentId = (int) ($_SESSION['user_id'] ?? 0);
                     <thead>
                         <tr>
                             <th>Login</th>
-                            <th>Imie i nazwisko</th>
+                            <th>Imię i nazwisko</th>
                             <th>Harcerski</th>
                             <th>Instruktorski</th>
                             <th>Rola</th>
@@ -83,7 +83,7 @@ $currentId = (int) ($_SESSION['user_id'] ?? 0);
                                     <?php if ($canEditProfile): ?>
                                         <div class="admin-inline-form">
                                             <a class="admin-btn admin-btn--ghost" href="<?= $isSelf ? 'profile.php' : 'user_edit.php?id=' . (int) $u['id'] ?>">
-                                                <?= $isSelf ? 'Moj profil' : 'Edytuj profil' ?>
+                                                <?= $isSelf ? 'Mój profil' : 'Edytuj profil' ?>
                                             </a>
                                         </div>
                                     <?php else: ?>
@@ -96,18 +96,18 @@ $currentId = (int) ($_SESSION['user_id'] ?? 0);
                                             <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
                                             <select name="role">
                                                 <option value="druh" <?= $u['role'] === 'druh' ? 'selected' : '' ?>>Druh</option>
-                                                <option value="zastepowy" <?= $u['role'] === 'zastepowy' ? 'selected' : '' ?>>Zastepowy</option>
-                                                <option value="druzynowy" <?= $u['role'] === 'druzynowy' ? 'selected' : '' ?>>Druzynowy</option>
+                                                <option value="zastepowy" <?= $u['role'] === 'zastepowy' ? 'selected' : '' ?>>Zastępowy</option>
+                                                <option value="druzynowy" <?= $u['role'] === 'druzynowy' ? 'selected' : '' ?>>Drużynowy</option>
                                                 <option value="admin" <?= $u['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
                                             </select>
-                                            <button class="admin-btn" type="submit">Zmien</button>
+                                            <button class="admin-btn" type="submit">Zmień</button>
                                         </form>
 
                                         <form method="post" action="user_delete.php" class="admin-inline-form">
                                             <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
                                             <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
                                             <button class="admin-btn admin-btn--danger" type="submit"
-                                                onclick="return confirm('Na pewno usunac uzytkownika?')">Usun</button>
+                                                onclick="return confirm('Na pewno usunąć użytkownika?')">Usuń</button>
                                         </form>
                                     <?php endif; ?>
                                 </td>

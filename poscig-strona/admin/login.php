@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 session_start();
 require __DIR__ . '/csrf.php';
-require __DIR__ . '/permissions.php';
+require_once __DIR__ . '/permissions.php';
 require __DIR__ . '/../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-    $_SESSION['login_error'] = 'Blad zabezpieczen (CSRF).';
+    $_SESSION['login_error'] = 'Błąd zabezpieczeń (CSRF).';
     header('Location: index.php');
     exit;
 }
@@ -21,7 +21,7 @@ $username = trim((string) ($_POST['username'] ?? ''));
 $password = (string) ($_POST['password'] ?? '');
 
 if ($username === '' || $password === '') {
-    $_SESSION['login_error'] = 'Nieprawidlowy login lub haslo.';
+    $_SESSION['login_error'] = 'Nieprawidłowy login lub hasło.';
     header('Location: index.php');
     exit;
 }
@@ -50,6 +50,6 @@ if ($user && password_verify($password, (string) $user['password'])) {
     exit;
 }
 
-$_SESSION['login_error'] = 'Nieprawidlowy login lub haslo.';
+$_SESSION['login_error'] = 'Nieprawidłowy login lub hasło.';
 header('Location: index.php');
 exit;

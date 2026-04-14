@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 session_start();
 require_once __DIR__ . '/csrf.php';
+require_once __DIR__ . '/permissions.php';
 
 // Auto-wylogowanie po 30 min
 if (isset($_SESSION['last_activity']) && time() - (int) $_SESSION['last_activity'] > 1800) {

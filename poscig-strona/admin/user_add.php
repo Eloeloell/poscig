@@ -8,7 +8,7 @@ require __DIR__ . '/../config/db.php';
 
 if (($_SESSION['role'] ?? '') !== 'admin') {
     http_response_code(403);
-    exit('Brak dostepu');
+    exit('Brak dostępu');
 }
 
 $errors = [];
@@ -24,7 +24,7 @@ $instruktorskiOptions = instruktorski_rank_options();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-        $errors[] = 'CSRF';
+        $errors[] = 'Błąd zabezpieczeń (CSRF)';
     }
 
     $username = trim((string) ($_POST['username'] ?? ''));
@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = (string) ($_POST['password'] ?? '');
     $role = (string) ($_POST['role'] ?? 'druh');
     $harcerskiStopien = (string) ($_POST['harcerski_stopien'] ?? '');
+    $harcerskiToSave = $harcerskiStopien !== '' ? $harcerskiStopien : null;
     $instruktorskiStopien = (string) ($_POST['instruktorski_stopien'] ?? '');
 
     if ($username === '' || !preg_match('/^[a-zA-Z0-9_.-]{3,32}$/', $username)) {
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($firstName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $firstName)) {
-        $errors[] = 'Imie: podaj poprawne imie';
+        $errors[] = 'Imię: podaj poprawne imię';
     }
 
     if ($lastName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $lastName)) {
@@ -48,20 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (strlen($password) < 8) {
-        $errors[] = 'Haslo: minimum 8 znakow';
+        $errors[] = 'Hasło: minimum 8 znaków';
     }
 
-    if (!array_key_exists($harcerskiStopien, $harcerskiOptions)) {
-        $errors[] = 'Nieprawidlowy stopien harcerski';
+    if ($harcerskiStopien !== '' && !array_key_exists($harcerskiStopien, $harcerskiOptions)) {
+        $errors[] = 'Nieprawidłowy stopień harcerski';
     }
 
     if ($instruktorskiStopien !== '' && !array_key_exists($instruktorskiStopien, $instruktorskiOptions)) {
-        $errors[] = 'Nieprawidlowy stopien instruktorski';
+        $errors[] = 'Nieprawidłowy stopień instruktorski';
     }
 
     $allowedRoles = ['admin', 'druh', 'druzynowy', 'zastepowy'];
     if (!in_array($role, $allowedRoles, true)) {
-        $errors[] = 'Nieprawidlowa rola';
+        $errors[] = 'Nieprawidłowa rola';
     }
 
     if (!$errors) {
@@ -69,15 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $stmt = $pdo->prepare('INSERT INTO users (username, password, first_name, last_name, harcerski_stopien, instruktorski_stopien, role) VALUES (?, ?, ?, ?, ?, ?, ?)');
-            $stmt->execute([$username, $hash, $firstName, $lastName, $harcerskiStopien, $instruktorskiStopien !== '' ? $instruktorskiStopien : null, $role]);
+            $stmt->execute([$username, $hash, $firstName, $lastName, $harcerskiToSave, $instruktorskiStopien !== '' ? $instruktorskiStopien : null, $role]);
 
             header('Location: users.php');
             exit;
         } catch (PDOException $e) {
             if ($e->getCode() === '23000') {
-                $errors[] = 'Taki login juz istnieje';
+                $errors[] = 'Taki login już istnieje';
             } else {
-                $errors[] = 'Blad bazy danych';
+                $errors[] = 'Błąd bazy danych';
             }
         }
     }
@@ -88,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
-    <title>Dodaj uzytkownika</title>
+    <title>Dodaj użytkownika</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -101,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Dodaj uzytkownika</h2>
+                    <h2 class="admin-title">Dodaj użytkownika</h2>
                     <p class="admin-subtitle">Nowe konto z profilem i stopniami.</p>
                 </div>
             </div>
@@ -125,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="admin-field">
-                    <label>Imie</label>
+                    <label>Imię</label>
                     <input type="text" name="first_name" value="<?= htmlspecialchars($firstName) ?>" required>
                 </div>
 
@@ -135,9 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien harcerski</label>
-                    <select name="harcerski_stopien" required>
-                        <option value="" disabled <?= $harcerskiStopien === '' ? 'selected' : '' ?>>Wybierz stopien</option>
+                    <label>Stopień harcerski</label>
+                    <select name="harcerski_stopien">
+                        <option value="" <?= $harcerskiStopien === '' ? 'selected' : '' ?>>Brak</option>
                         <?php foreach ($harcerskiOptions as $value => $label): ?>
                             <option value="<?= htmlspecialchars($value) ?>" <?= $harcerskiStopien === $value ? 'selected' : '' ?>><?= htmlspecialchars($label) ?></option>
                         <?php endforeach; ?>
@@ -145,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien instruktorski</label>
+                    <label>Stopień instruktorski</label>
                     <select name="instruktorski_stopien">
                         <option value="" <?= $instruktorskiStopien === '' ? 'selected' : '' ?>>Brak</option>
                         <?php foreach ($instruktorskiOptions as $value => $label): ?>
@@ -155,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="admin-field">
-                    <label>Haslo</label>
+                    <label>Hasło</label>
                     <input type="password" name="password" required>
                 </div>
 
@@ -163,8 +164,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Rola</label>
                     <select name="role">
                         <option value="druh" <?= $role === 'druh' ? 'selected' : '' ?>>Druh</option>
-                        <option value="zastepowy" <?= $role === 'zastepowy' ? 'selected' : '' ?>>Zastepowy</option>
-                        <option value="druzynowy" <?= $role === 'druzynowy' ? 'selected' : '' ?>>Druzynowy</option>
+                        <option value="zastepowy" <?= $role === 'zastepowy' ? 'selected' : '' ?>>Zastępowy</option>
+                        <option value="druzynowy" <?= $role === 'druzynowy' ? 'selected' : '' ?>>Drużynowy</option>
                         <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
                     </select>
                 </div>

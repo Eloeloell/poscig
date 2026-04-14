@@ -4,6 +4,7 @@ declare(strict_types=1);
 session_start();
 require __DIR__ . '/csrf.php';
 
+// Ładowanie strony logowania.
 if (isset($_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit;
@@ -17,7 +18,7 @@ unset($_SESSION['login_error']);
 
 <head>
     <meta charset="UTF-8">
-    <title>Panel Poscigu</title>
+    <title>Panel Pościgu</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -31,11 +32,13 @@ unset($_SESSION['login_error']);
 
         <div class="admin-auth">
             <section class="admin-card admin-auth__panel admin-auth__copy">
-                <span class="admin-badge">Panel Poscigu / Dost&#281;p / Bezpiecze&#324;stwo</span>
-                <h1 class="admin-auth__headline">Panel Poscigu</h1>
+                <span class="admin-badge">Panel Pościgu / dostęp</span>
+                <h1 class="admin-auth__headline">Panel Pościgu</h1>
                 <p class="admin-auth__text">
-                    Zaloguj si&#281; do panelu operacyjnego.
-                    role, has&#322;a i histori&#281; zmian punktowych.
+                    Zaloguj się do panelu Pościgu.
+                </p>
+                <p class="admin-subtitle">
+                    Jeśli strona odmawia dostępu, sprawdź hasło lub skontaktuj się z zastępowym.
                 </p>
                 <button class="admin-btn admin-btn--ghost admin-theme-toggle" type="button" data-theme-toggle>
                     <span data-theme-label>Tryb jasny</span>
@@ -45,8 +48,8 @@ unset($_SESSION['login_error']);
             <section class="admin-card admin-auth__panel">
                 <div class="admin-section-header">
                     <div>
-                        <h2 class="admin-title">Panel Poscigu</h2>
-                        <p class="admin-subtitle">Wprowad&#378; dane dost&#281;powe swojego konta.</p>
+                        <h2 class="admin-title">Panel Pościgu</h2>
+                        <p class="admin-subtitle">Wprowadź dane logowania swojego konta.</p>
                     </div>
                 </div>
 
@@ -59,8 +62,8 @@ unset($_SESSION['login_error']);
                     </div>
 
                     <div class="admin-field">
-                        <label>Has&#322;o</label>
-                        <input type="password" name="password" placeholder="Has&#322;o" required>
+                        <label>Hasło</label>
+                        <input type="password" name="password" placeholder="Hasło" required>
                     </div>
 
                     <div class="admin-form-actions">

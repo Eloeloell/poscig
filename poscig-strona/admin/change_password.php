@@ -10,7 +10,7 @@ $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-        $errors[] = 'CSRF';
+        $errors[] = 'Błąd zabezpieczeń (CSRF)';
     }
 
     $current = (string) ($_POST['current_password'] ?? '');
@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new2 = (string) ($_POST['new_password_2'] ?? '');
 
     if (strlen($new1) < 8) {
-        $errors[] = 'Nowe haslo: minimum 8 znakow';
+        $errors[] = 'Nowe hasło: minimum 8 znaków';
     }
 
     if ($new1 !== $new2) {
-        $errors[] = 'Nowe hasla nie sa takie same';
+        $errors[] = 'Nowe hasła nie są takie same';
     }
 
     if (!$errors) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hash = (string) ($stmt->fetchColumn() ?: '');
 
         if ($hash === '' || !password_verify($current, $hash)) {
-            $errors[] = 'Aktualne haslo jest nieprawidlowe';
+            $errors[] = 'Aktualne hasło jest nieprawidłowe';
         } else {
             $newHash = password_hash($new1, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
-    <title>Zmiana hasla</title>
+    <title>Zmiana hasła</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -59,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Zmie&#324; has&#322;o</h2>
-                    <p class="admin-subtitle">Aktualizacja has&#322;a dla bie&#380;&#261;cego konta.</p>
+                    <h2 class="admin-title">Zmień hasło</h2>
+                    <p class="admin-subtitle">Aktualizacja hasła dla bieżącego konta.</p>
                 </div>
             </div>
 
             <?php if ($success): ?>
-                <div class="admin-success">Haslo zostalo zmienione.</div>
+                <div class="admin-success">Hasło zostało zmienione.</div>
             <?php endif; ?>
 
             <?php if ($errors): ?>
@@ -82,22 +82,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 
                 <div class="admin-field">
-                    <label>Aktualne haslo</label>
+                    <label>Aktualne hasło</label>
                     <input type="password" name="current_password" required>
                 </div>
 
                 <div class="admin-field">
-                    <label>Nowe haslo</label>
+                    <label>Nowe hasło</label>
                     <input type="password" name="new_password" required>
                 </div>
 
                 <div class="admin-field">
-                    <label>Powtorz nowe haslo</label>
+                    <label>Powtórz nowe hasło</label>
                     <input type="password" name="new_password_2" required>
                 </div>
 
                 <div class="admin-form-actions">
-                    <button class="admin-btn" type="submit">Zmie&#324;</button>
+                    <button class="admin-btn" type="submit">Zmień</button>
                 </div>
             </form>
         </div>

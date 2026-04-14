@@ -48,29 +48,30 @@ $canAssignSeniorRanks = can_assign_senior_ranks($profile['role']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-        $errors[] = 'CSRF';
+        $errors[] = 'Błąd zabezpieczeń (CSRF)';
     }
 
     $firstName = trim((string) ($_POST['first_name'] ?? ''));
     $lastName = trim((string) ($_POST['last_name'] ?? ''));
     $postedHarcerski = (string) ($_POST['harcerski_stopien'] ?? '');
+    $harcerskiToSave = $postedHarcerski !== '' ? $postedHarcerski : null;
     $postedInstruktorski = (string) ($_POST['instruktorski_stopien'] ?? '');
 
     if ($firstName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $firstName)) {
-        $errors[] = 'Imie: podaj poprawne imie';
+        $errors[] = 'Imię: podaj poprawne imię';
     }
 
     if ($lastName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $lastName)) {
         $errors[] = 'Nazwisko: podaj poprawne nazwisko';
     }
 
-    if (!array_key_exists($postedHarcerski, $harcerskiOptions)) {
-        $errors[] = 'Nieprawidlowy stopien harcerski';
+    if ($postedHarcerski !== '' && !array_key_exists($postedHarcerski, $harcerskiOptions)) {
+        $errors[] = 'Nieprawidłowy stopień harcerski';
     }
 
     if ($canAssignSeniorRanks) {
         if ($postedInstruktorski !== '' && !array_key_exists($postedInstruktorski, $instruktorskiOptions)) {
-            $errors[] = 'Nieprawidlowy stopien instruktorski';
+            $errors[] = 'Nieprawidłowy stopień instruktorski';
         }
     } else {
         $postedInstruktorski = $profile['instruktorski_stopien'];
@@ -79,17 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         $instruktorskiToSave = $postedInstruktorski !== '' ? $postedInstruktorski : null;
         $stmt = $pdo->prepare('UPDATE users SET first_name = ?, last_name = ?, harcerski_stopien = ?, instruktorski_stopien = ? WHERE id = ?');
-        $stmt->execute([$firstName, $lastName, $postedHarcerski, $instruktorskiToSave, $userId]);
+        $stmt->execute([$firstName, $lastName, $harcerskiToSave, $instruktorskiToSave, $userId]);
 
         $_SESSION['first_name'] = $firstName;
         $_SESSION['last_name'] = $lastName;
-        $_SESSION['harcerski_stopien'] = $postedHarcerski;
+        $_SESSION['harcerski_stopien'] = $harcerskiToSave ?? '';
         $_SESSION['instruktorski_stopien'] = $instruktorskiToSave ?? '';
-        $_SESSION['stopien'] = rank_summary($postedHarcerski, $instruktorskiToSave ?? '');
+        $_SESSION['stopien'] = rank_summary($harcerskiToSave ?? '', $instruktorskiToSave ?? '');
 
         $profile['first_name'] = $firstName;
         $profile['last_name'] = $lastName;
-        $profile['harcerski_stopien'] = $postedHarcerski;
+        $profile['harcerski_stopien'] = $harcerskiToSave ?? '';
         $profile['instruktorski_stopien'] = $instruktorskiToSave ?? '';
         $success = true;
     }
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $displayName = trim($profile['first_name'] . ' ' . $profile['last_name']);
 if ($displayName === '') {
-    $displayName = $profile['username'] !== '' ? $profile['username'] : 'Uzytkownik';
+    $displayName = $profile['username'] !== '' ? $profile['username'] : 'Użytkownik';
 }
 
 $harcerskiLabel = rank_label($profile['harcerski_stopien']);
@@ -122,7 +123,7 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Moj profil</h2>
+                    <h2 class="admin-title">Mój profil</h2>
                     <p class="admin-subtitle">Dane konta i stopnie.</p>
                 </div>
             </div>
@@ -136,10 +137,10 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Rola</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($profile['role']) ?></div>
-                    <div class="admin-kpi__hint">Poziom dostepu.</div>
+                    <div class="admin-kpi__hint">Poziom dostępu.</div>
                 </div>
                 <div class="admin-kpi">
-                    <div class="admin-kpi__label">Imie i nazwisko</div>
+                    <div class="admin-kpi__label">Imię i nazwisko</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($displayName) ?></div>
                     <div class="admin-kpi__hint">Dane profilu.</div>
                 </div>
@@ -155,13 +156,13 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
             <div class="admin-section-header">
                 <div>
                     <h2 class="admin-title">Edytuj profil</h2>
-                    <p class="admin-subtitle">Imie, nazwisko i stopnie.</p>
+                    <p class="admin-subtitle">Imię, nazwisko i stopnie.</p>
                 </div>
-                <a class="admin-btn admin-btn--ghost" href="dashboard.php">Wroc do panelu</a>
+                <a class="admin-btn admin-btn--ghost" href="dashboard.php">Wróć do panelu</a>
             </div>
 
             <?php if ($success): ?>
-                <div class="admin-success">Profil zostal zapisany.</div>
+                <div class="admin-success">Profil został zapisany.</div>
             <?php endif; ?>
 
             <?php if ($errors): ?>
@@ -178,7 +179,7 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 
                 <div class="admin-field">
-                    <label>Imie</label>
+                    <label>Imię</label>
                     <input type="text" name="first_name" value="<?= htmlspecialchars($profile['first_name']) ?>" required>
                 </div>
 
@@ -188,9 +189,9 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien harcerski</label>
-                    <select name="harcerski_stopien" required>
-                        <option value="" disabled <?= $profile['harcerski_stopien'] === '' ? 'selected' : '' ?>>Wybierz stopien</option>
+                    <label>Stopień harcerski</label>
+                    <select name="harcerski_stopien">
+                        <option value="" <?= $profile['harcerski_stopien'] === '' ? 'selected' : '' ?>>Brak</option>
                         <?php foreach ($harcerskiOptions as $value => $label): ?>
                             <option value="<?= htmlspecialchars($value) ?>" <?= $profile['harcerski_stopien'] === $value ? 'selected' : '' ?>><?= htmlspecialchars($label) ?></option>
                         <?php endforeach; ?>
@@ -198,7 +199,7 @@ $rankSummary = rank_summary($profile['harcerski_stopien'], $profile['instruktors
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien instruktorski</label>
+                    <label>Stopień instruktorski</label>
                     <?php if ($canAssignSeniorRanks): ?>
                         <select name="instruktorski_stopien">
                             <option value="" <?= $profile['instruktorski_stopien'] === '' ? 'selected' : '' ?>>Brak</option>

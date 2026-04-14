@@ -9,13 +9,13 @@ require __DIR__ . '/../config/db.php';
 $currentRole = (string) ($_SESSION['role'] ?? '');
 if (!can_manage_all_profiles($currentRole)) {
     http_response_code(403);
-    exit('Brak dostepu');
+    exit('Brak dostępu');
 }
 
 $targetId = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 if ($targetId <= 0) {
     http_response_code(400);
-    exit('Nieprawidlowy uzytkownik');
+    exit('Nieprawidłowy użytkownik');
 }
 
 $stmt = $pdo->prepare('SELECT id, username, first_name, last_name, harcerski_stopien, instruktorski_stopien, role FROM users WHERE id = ? LIMIT 1');
@@ -23,13 +23,13 @@ $stmt->execute([$targetId]);
 $target = $stmt->fetch();
 if (!$target) {
     http_response_code(404);
-    exit('Uzytkownik nie istnieje');
+    exit('Użytkownik nie istnieje');
 }
 
 $targetRole = (string) ($target['role'] ?? '');
 if (!can_edit_other_profile($currentRole, $targetRole)) {
     http_response_code(403);
-    exit('Brak dostepu');
+    exit('Brak dostępu');
 }
 
 $canAssignSeniorRanks = can_assign_senior_ranks($currentRole);
@@ -45,29 +45,30 @@ $instruktorskiStopien = (string) ($target['instruktorski_stopien'] ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-        $errors[] = 'CSRF';
+        $errors[] = 'Błąd zabezpieczeń (CSRF)';
     }
 
     $firstName = trim((string) ($_POST['first_name'] ?? ''));
     $lastName = trim((string) ($_POST['last_name'] ?? ''));
     $postedHarcerski = (string) ($_POST['harcerski_stopien'] ?? '');
+    $harcerskiToSave = $postedHarcerski !== '' ? $postedHarcerski : null;
     $postedInstruktorski = (string) ($_POST['instruktorski_stopien'] ?? '');
 
     if ($firstName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $firstName)) {
-        $errors[] = 'Imie: podaj poprawne imie';
+        $errors[] = 'Imię: podaj poprawne imię';
     }
 
     if ($lastName === '' || !preg_match('/^[\p{L}][\p{L} \-\.]{1,49}$/u', $lastName)) {
         $errors[] = 'Nazwisko: podaj poprawne nazwisko';
     }
 
-    if (!array_key_exists($postedHarcerski, $harcerskiOptions)) {
-        $errors[] = 'Nieprawidlowy stopien harcerski';
+    if ($postedHarcerski !== '' && !array_key_exists($postedHarcerski, $harcerskiOptions)) {
+        $errors[] = 'Nieprawidłowy stopień harcerski';
     }
 
     if ($canAssignSeniorRanks) {
         if ($postedInstruktorski !== '' && !array_key_exists($postedInstruktorski, $instruktorskiOptions)) {
-            $errors[] = 'Nieprawidlowy stopien instruktorski';
+            $errors[] = 'Nieprawidłowy stopień instruktorski';
         }
     } else {
         $postedInstruktorski = $instruktorskiStopien;
@@ -76,13 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         $instruktorskiToSave = $postedInstruktorski !== '' ? $postedInstruktorski : null;
         $stmt = $pdo->prepare('UPDATE users SET first_name = ?, last_name = ?, harcerski_stopien = ?, instruktorski_stopien = ? WHERE id = ?');
-        $stmt->execute([$firstName, $lastName, $postedHarcerski, $instruktorskiToSave, $targetId]);
+        $stmt->execute([$firstName, $lastName, $harcerskiToSave, $instruktorskiToSave, $targetId]);
 
         $target['first_name'] = $firstName;
         $target['last_name'] = $lastName;
-        $target['harcerski_stopien'] = $postedHarcerski;
+        $target['harcerski_stopien'] = $harcerskiToSave ?? '';
         $target['instruktorski_stopien'] = $instruktorskiToSave ?? '';
-        $harcerskiStopien = $postedHarcerski;
+        $harcerskiStopien = $harcerskiToSave ?? '';
         $instruktorskiStopien = $instruktorskiToSave ?? '';
         $success = true;
     }
@@ -90,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $displayName = trim((string) ($target['first_name'] ?? '') . ' ' . (string) ($target['last_name'] ?? ''));
 if ($displayName === '') {
-    $displayName = (string) ($target['username'] ?? 'Uzytkownik');
+    $displayName = (string) ($target['username'] ?? 'Użytkownik');
 }
 
 $harcerskiLabel = rank_label((string) ($target['harcerski_stopien'] ?? ''));
@@ -115,10 +116,10 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Profil uzytkownika</h2>
+                    <h2 class="admin-title">Profil użytkownika</h2>
                     <p class="admin-subtitle"><?= htmlspecialchars((string) $target['username']) ?></p>
                 </div>
-                <a class="admin-btn admin-btn--ghost" href="users.php">Wroc do listy</a>
+                <a class="admin-btn admin-btn--ghost" href="users.php">Wróć do listy</a>
             </div>
 
             <div class="admin-kpis">
@@ -130,10 +131,10 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Rola</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars((string) $target['role']) ?></div>
-                    <div class="admin-kpi__hint">Poziom dostepu.</div>
+                    <div class="admin-kpi__hint">Poziom dostępu.</div>
                 </div>
                 <div class="admin-kpi">
-                    <div class="admin-kpi__label">Imie i nazwisko</div>
+                    <div class="admin-kpi__label">Imię i nazwisko</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($displayName) ?></div>
                     <div class="admin-kpi__hint">Dane profilu.</div>
                 </div>
@@ -149,12 +150,12 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
             <div class="admin-section-header">
                 <div>
                     <h2 class="admin-title">Edytuj dane</h2>
-                    <p class="admin-subtitle">Imie, nazwisko i stopnie.</p>
+                    <p class="admin-subtitle">Imię, nazwisko i stopnie.</p>
                 </div>
             </div>
 
             <?php if ($success): ?>
-                <div class="admin-success">Profil zostal zapisany.</div>
+                <div class="admin-success">Profil został zapisany.</div>
             <?php endif; ?>
 
             <?php if ($errors): ?>
@@ -172,7 +173,7 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
                 <input type="hidden" name="id" value="<?= (int) $targetId ?>">
 
                 <div class="admin-field">
-                    <label>Imie</label>
+                    <label>Imię</label>
                     <input type="text" name="first_name" value="<?= htmlspecialchars($firstName) ?>" required>
                 </div>
 
@@ -182,9 +183,9 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien harcerski</label>
-                    <select name="harcerski_stopien" required>
-                        <option value="" disabled <?= $harcerskiStopien === '' ? 'selected' : '' ?>>Wybierz stopien</option>
+                    <label>Stopień harcerski</label>
+                    <select name="harcerski_stopien">
+                        <option value="" <?= $harcerskiStopien === '' ? 'selected' : '' ?>>Brak</option>
                         <?php foreach ($harcerskiOptions as $value => $label): ?>
                             <option value="<?= htmlspecialchars($value) ?>" <?= $harcerskiStopien === $value ? 'selected' : '' ?>><?= htmlspecialchars($label) ?></option>
                         <?php endforeach; ?>
@@ -192,7 +193,7 @@ $rankSummary = rank_summary((string) ($target['harcerski_stopien'] ?? ''), (stri
                 </div>
 
                 <div class="admin-field">
-                    <label>Stopien instruktorski</label>
+                    <label>Stopień instruktorski</label>
                     <?php if ($canAssignSeniorRanks): ?>
                         <select name="instruktorski_stopien">
                             <option value="" <?= $instruktorskiStopien === '' ? 'selected' : '' ?>>Brak</option>

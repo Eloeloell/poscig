@@ -35,9 +35,9 @@ function can_assign_senior_ranks(string $role): bool
 function harcerski_rank_options(): array
 {
     return [
-        'mlodzik' => 'Mlodzik',
+        'mlodzik' => 'Młodzik',
         'wywiadowca' => 'Wywiadowca',
-        'cwik' => 'Cwik',
+        'cwik' => 'Ćwik',
         'harcerz_orli' => 'Harcerz Orli',
         'harcerz_rzeczypospolitej' => 'Harcerz Rzeczypospolitej',
     ];

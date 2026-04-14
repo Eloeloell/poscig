@@ -17,14 +17,14 @@ function admin_nav(string $active = ''): void
     $items = [
         ['key' => 'dashboard', 'label' => 'Panel', 'href' => 'dashboard.php', 'minLevel' => 1],
         ['key' => 'profile', 'label' => 'Profil', 'href' => 'profile.php', 'minLevel' => 1],
-        ['key' => 'users', 'label' => 'U&#380;ytkownicy', 'href' => 'users.php', 'minLevel' => 2],
+        ['key' => 'users', 'label' => 'Użytkownicy', 'href' => 'users.php', 'minLevel' => 2],
         ['key' => 'points', 'label' => 'Punkty', 'href' => 'edit_points.php', 'minLevel' => 4],
     ];
 
     echo '<nav class="admin-nav">';
-    echo '<span class="admin-nav__brand">Panel Poscigu</span>';
+    echo '<span class="admin-nav__brand">Panel Pościgu</span>';
     if ($active !== 'dashboard') {
-        echo '<a class="admin-link admin-link--back" href="dashboard.php">&larr; Pulpit</a>';
+        echo '<a class="admin-link admin-link--back" href="dashboard.php">&larr; Panel</a>';
     }
 
     foreach ($items as $it) {

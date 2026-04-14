@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require __DIR__ . '/auth.php';
+require_once __DIR__ . '/permissions.php';
 require __DIR__ . '/_nav.php';
 require __DIR__ . '/../config/db.php';
 
@@ -50,7 +51,7 @@ if ($userId > 0) {
 
 $displayName = trim($profile['first_name'] . ' ' . $profile['last_name']);
 if ($displayName === '') {
-    $displayName = $profile['username'] !== '' ? $profile['username'] : 'Uzytkownik';
+    $displayName = $profile['username'] !== '' ? $profile['username'] : 'Użytkownik';
 }
 
 $harcerskiLabel = rank_label($profile['harcerski_stopien']);
@@ -77,7 +78,7 @@ if ($isAdmin) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Panel Poscigu</title>
+    <title>Panel Pościgu</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -90,7 +91,7 @@ if ($isAdmin) {
         <section class="admin-card admin-hero">
             <div>
                 <span class="admin-badge">Panel operacyjny</span>
-                <h1 class="admin-title">Panel Poscigu</h1>
+                <h1 class="admin-title">Panel Pościgu</h1>
                 <p class="admin-subtitle">
                     <strong><?= htmlspecialchars($displayName) ?></strong>
                     (<?= htmlspecialchars($role) ?>)
@@ -98,29 +99,29 @@ if ($isAdmin) {
                 </p>
                 <div class="admin-badges">
                     <span class="admin-chip">Sesja aktywna</span>
-                    <span class="admin-chip">CSRF wlaczone</span>
+                    <span class="admin-chip">CSRF włączone</span>
                     <?php if ($isAdmin): ?>
-                        <span class="admin-chip">Admin</span>
+                        <span class="admin-chip">Administrator</span>
                     <?php else: ?>
-                        <span class="admin-chip">Dostep ograniczony</span>
+                        <span class="admin-chip">Dostęp ograniczony</span>
                     <?php endif; ?>
                 </div>
             </div>
-            <a class="admin-btn admin-btn--ghost" href="profile.php">Moj profil</a>
+            <a class="admin-btn admin-btn--ghost" href="profile.php">Mój profil</a>
         </section>
 
         <section class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Moj profil</h2>
-                    <p class="admin-subtitle">Imie, nazwisko i oba stopnie.</p>
+                    <h2 class="admin-title">Mój profil</h2>
+                    <p class="admin-subtitle">Edytuj profil obok.</p>
                 </div>
                 <a class="admin-btn admin-btn--ghost" href="profile.php">Edytuj profil</a>
             </div>
 
             <div class="admin-kpis">
                 <div class="admin-kpi">
-                    <div class="admin-kpi__label">Imie i nazwisko</div>
+                    <div class="admin-kpi__label">Imię i nazwisko</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($displayName) ?></div>
                     <div class="admin-kpi__hint">Dane profilu.</div>
                 </div>
@@ -132,12 +133,12 @@ if ($isAdmin) {
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Harcerski</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($harcerskiLabel) ?></div>
-                    <div class="admin-kpi__hint">Mlodzik, wywiadowca, cwik, harcerz orli, HR.</div>
+                    <div class="admin-kpi__hint">Aktualny stopień harcerski, widoczny na podstronach.</div>
                 </div>
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Instruktorski</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($instruktorskiLabel) ?></div>
-                    <div class="admin-kpi__hint">PWD, PHM, HM.</div>
+                    <div class="admin-kpi__hint">Stopień instruktorski.</div>
                 </div>
             </div>
         </section>
@@ -146,7 +147,7 @@ if ($isAdmin) {
             <div class="admin-section-header">
                 <div>
                     <h2 class="admin-title">Stan panelu</h2>
-                    <p class="admin-subtitle">Aktywny</p>
+                    <p class="admin-subtitle">Aktywny.</p>
                 </div>
             </div>
 
@@ -154,17 +155,17 @@ if ($isAdmin) {
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Rola</div>
                     <div class="admin-kpi__value"><?= htmlspecialchars($role) ?></div>
-                    <div class="admin-kpi__hint">Poziom dostepu.</div>
+                    <div class="admin-kpi__hint">Poziom dostępu.</div>
                 </div>
                 <div class="admin-kpi">
-                    <div class="admin-kpi__label">Uzytkownicy</div>
+                    <div class="admin-kpi__label">Użytkownicy</div>
                     <div class="admin-kpi__value"><?= $usersTotal === null ? '&mdash;' : (int) $usersTotal ?></div>
-                    <div class="admin-kpi__hint">Widoczne tylko dla admina.</div>
+                    <div class="admin-kpi__hint">Widoczne tylko dla administratora.</div>
                 </div>
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Punkty</div>
                     <div class="admin-kpi__value"><?= $pointsTotal === null ? '&mdash;' : (int) $pointsTotal ?></div>
-                    <div class="admin-kpi__hint">Liczba rekordow punktowych.</div>
+                    <div class="admin-kpi__hint">Liczba rekordów punktowych.</div>
                 </div>
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Historia</div>
@@ -178,7 +179,7 @@ if ($isAdmin) {
             <div class="admin-section-header">
                 <div>
                     <h2 class="admin-title">Skróty operacyjne</h2>
-                    <p class="admin-subtitle">Najczesciej uzywane akcje.</p>
+                    <p class="admin-subtitle">Najczęściej używane akcje.</p>
                 </div>
             </div>
 
@@ -187,7 +188,7 @@ if ($isAdmin) {
                     <a class="admin-tile" href="users.php">
                         <div class="admin-tile__icon">U</div>
                         <div>
-                            <h3 class="admin-tile__title">Uzytkownicy</h3>
+                            <h3 class="admin-tile__title">Użytkownicy</h3>
                             <p class="admin-tile__desc">Profile, role i usuwanie kont.</p>
                         </div>
                         <div class="admin-tile__chev">&#8250;</div>
@@ -196,7 +197,7 @@ if ($isAdmin) {
                     <a class="admin-tile" href="user_add.php">
                         <div class="admin-tile__icon">+</div>
                         <div>
-                            <h3 class="admin-tile__title">Dodaj uzytkownika</h3>
+                            <h3 class="admin-tile__title">Dodaj użytkownika</h3>
                             <p class="admin-tile__desc">Nowe konto z profilem i stopniem.</p>
                         </div>
                         <div class="admin-tile__chev">&#8250;</div>
@@ -206,7 +207,7 @@ if ($isAdmin) {
                         <div class="admin-tile__icon">P</div>
                         <div>
                             <h3 class="admin-tile__title">Punkty</h3>
-                            <p class="admin-tile__desc">Edycja punktow i historia.</p>
+                            <p class="admin-tile__desc">Edycja punktów i historia.</p>
                         </div>
                         <div class="admin-tile__chev">&#8250;</div>
                     </a>
@@ -215,8 +216,8 @@ if ($isAdmin) {
                 <a class="admin-tile" href="profile.php">
                     <div class="admin-tile__icon">M</div>
                     <div>
-                        <h3 class="admin-tile__title">Moj profil</h3>
-                        <p class="admin-tile__desc">Imie, nazwisko i stopnie.</p>
+                        <h3 class="admin-tile__title">Mój profil</h3>
+                        <p class="admin-tile__desc">Imię, nazwisko i stopnie.</p>
                     </div>
                     <div class="admin-tile__chev">&#8250;</div>
                 </a>
@@ -224,8 +225,8 @@ if ($isAdmin) {
                 <a class="admin-tile" href="change_password.php">
                     <div class="admin-tile__icon">&#128274;</div>
                     <div>
-                        <h3 class="admin-tile__title">Zmien haslo</h3>
-                        <p class="admin-tile__desc">Haslo dla tego konta.</p>
+                        <h3 class="admin-tile__title">Zmień hasło</h3>
+                        <p class="admin-tile__desc">Hasło dla tego konta.</p>
                     </div>
                     <div class="admin-tile__chev">&#8250;</div>
                 </a>

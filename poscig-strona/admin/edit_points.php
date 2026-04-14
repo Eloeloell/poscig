@@ -7,12 +7,26 @@ require __DIR__ . '/../config/db.php';
 
 if (($_SESSION['role'] ?? '') !== 'admin') {
     http_response_code(403);
-    exit('Brak dostepu');
+    exit('Brak dostępu');
 }
 
 function quoteIdentifier(string $name): string
 {
     return '`' . str_replace('`', '``', $name) . '`';
+}
+
+function point_label(string $key): string
+{
+    static $labels = [
+        '1' => 'Doliwa',
+        '2' => 'Korsak',
+        '3' => 'Krzywda',
+        'Doliwa' => 'Doliwa',
+        'Korsak' => 'Korsak',
+        'Krzywda' => 'Krzywda',
+    ];
+
+    return $labels[$key] ?? $key;
 }
 
 function detectPointsKeyColumn(PDO $pdo): string
@@ -37,18 +51,18 @@ function detectPointsKeyColumn(PDO $pdo): string
 $pointsKeyCol = detectPointsKeyColumn($pdo);
 $keySql = quoteIdentifier($pointsKeyCol);
 
-$stmt = $pdo->query("SELECT {$keySql}, value FROM points");
+$stmt = $pdo->query("SELECT {$keySql}, value FROM points ORDER BY {$keySql}");
 $pointsArr = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
 $success = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string) $_POST['csrf'])) {
-        exit('CSRF');
+        exit('Błąd zabezpieczeń (CSRF)');
     }
 
     $pointsPost = $_POST['points'] ?? null;
     if (!is_array($pointsPost)) {
-        exit('Bad request');
+        exit('Nieprawidłowe żądanie');
     }
 
     foreach ($pointsPost as $zastep => $val) {
@@ -69,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    $stmt = $pdo->query("SELECT {$keySql}, value FROM points");
+    $stmt = $pdo->query("SELECT {$keySql}, value FROM points ORDER BY {$keySql}");
     $pointsArr = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     $success = true;
 }
@@ -83,7 +97,7 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
 
 <head>
     <meta charset="UTF-8">
-    <title>Punkty zast&#281;p&#243;w</title>
+    <title>Punkty zastępów</title>
     <link rel="stylesheet" href="/poscig-strona/src/strony/style.css">
     <link rel="stylesheet" href="admin.css?v=2">
     <script src="theme.js?v=2" defer></script>
@@ -100,8 +114,8 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
         <div class="admin-card">
             <div class="admin-section-header">
                 <div>
-                    <h2 class="admin-title">Edytuj punkty zast&#281;p&#243;w</h2>
-                    <p class="admin-subtitle">Zmieniaj warto&#347;ci i zapisuj opis, kt&#243;ry trafi do historii.</p>
+                    <h2 class="admin-title">Edytuj punkty zastępów</h2>
+                    <p class="admin-subtitle">Zmieniaj wartości i zapisuj opis, który trafi do historii.</p>
                 </div>
             </div>
 
@@ -111,16 +125,18 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
                 <div class="admin-point-list">
                     <?php foreach ($pointsArr as $zastep => $val): ?>
                         <div class="admin-point-row">
-                            <div class="admin-point-row__label"><?= htmlspecialchars((string) $zastep) ?></div>
-                            <input type="number" name="points[<?= htmlspecialchars((string) $zastep) ?>]" value="<?= (int) $val ?>" required>
-                            <input type="text" name="description[<?= htmlspecialchars((string) $zastep) ?>]" placeholder="Pow&#243;d zmiany">
+                            <div class="admin-point-row__label"><?= htmlspecialchars(point_label((string) $zastep)) ?></div>
+                            <input type="number" name="points[<?= htmlspecialchars((string) $zastep) ?>]"
+                                value="<?= (int) $val ?>" required>
+                            <input type="text" name="description[<?= htmlspecialchars((string) $zastep) ?>]"
+                                placeholder="Powód zmiany">
                         </div>
                     <?php endforeach; ?>
                 </div>
 
                 <div class="admin-form-actions">
                     <button class="admin-btn" type="submit">Zapisz zmiany</button>
-                    <span class="admin-muted">Ka&#380;da korekta tworzy wpis w historii.</span>
+                    <span class="admin-muted">Każda korekta tworzy wpis w historii.</span>
                 </div>
             </form>
         </div>
@@ -129,7 +145,7 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
             <div class="admin-section-header">
                 <div>
                     <h2 class="admin-title">Ostatnie zmiany</h2>
-                    <p class="admin-subtitle">50 najnowszych wpis&#243;w z dziennika punktowego.</p>
+                    <p class="admin-subtitle">50 najnowszych wpisów z dziennika punktowego.</p>
                 </div>
             </div>
 
@@ -137,7 +153,7 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>Zast&#281;p</th>
+                            <th>Zastęp</th>
                             <th>Za co</th>
                             <th>Punkty</th>
                             <th>Data</th>
@@ -146,7 +162,7 @@ $csrf = (string) ($_SESSION['csrf_token'] ?? '');
                     <tbody>
                         <?php foreach ($history as $row): ?>
                             <tr>
-                                <td><?= htmlspecialchars((string) $row['zastep']) ?></td>
+                                <td><?= htmlspecialchars(point_label((string) $row['zastep'])) ?></td>
                                 <td><?= htmlspecialchars((string) $row['description']) ?></td>
                                 <td><?= ((int) $row['points'] > 0 ? '+' : '') . (int) $row['points'] ?></td>
                                 <td><?= date('d.m.Y H:i', strtotime((string) $row['created_at'])) ?></td>
