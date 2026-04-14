@@ -20,7 +20,7 @@ if (empty($_POST['csrf']) || !hash_equals($_SESSION['csrf_token'] ?? '', (string
 $userId = isset($_POST['id']) ? (int) $_POST['id'] : 0;
 $newRole = (string) ($_POST['role'] ?? '');
 
-$allowedRoles = ['admin', 'kadra', 'druzynowy'];
+$allowedRoles = ['admin', 'druh', 'druzynowy', 'zastepowy'];
 if (!in_array($newRole, $allowedRoles, true)) {
     exit('Nieprawidłowa rola');
 }

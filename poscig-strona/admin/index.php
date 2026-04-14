@@ -37,6 +37,9 @@ unset($_SESSION['login_error']);
                     Zaloguj si&#281; do panelu operacyjnego.
                     role, has&#322;a i histori&#281; zmian punktowych.
                 </p>
+                <button class="admin-btn admin-btn--ghost admin-theme-toggle" type="button" data-theme-toggle>
+                    <span data-theme-label>Tryb jasny</span>
+                </button>
             </section>
 
             <section class="admin-card admin-auth__panel">
@@ -45,9 +48,6 @@ unset($_SESSION['login_error']);
                         <h2 class="admin-title">Panel Poscigu</h2>
                         <p class="admin-subtitle">Wprowad&#378; dane dost&#281;powe swojego konta.</p>
                     </div>
-                    <button class="admin-btn admin-btn--ghost admin-theme-toggle" type="button" data-theme-toggle>
-                        <span data-theme-label>Tryb jasny</span>
-                    </button>
                 </div>
 
                 <form method="post" action="login.php" class="admin-form-grid">

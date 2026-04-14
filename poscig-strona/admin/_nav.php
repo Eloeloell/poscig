@@ -1,15 +1,24 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/permissions.php';
+
 function admin_nav(string $active = ''): void
 {
     $role = (string) ($_SESSION['role'] ?? '');
     $username = (string) ($_SESSION['username'] ?? '');
+    $firstName = trim((string) ($_SESSION['first_name'] ?? ''));
+    $lastName = trim((string) ($_SESSION['last_name'] ?? ''));
+    $displayName = trim($firstName . ' ' . $lastName);
+    if ($displayName === '') {
+        $displayName = $username;
+    }
 
     $items = [
-        ['key' => 'dashboard', 'label' => 'Panel', 'href' => 'dashboard.php', 'adminOnly' => false],
-        ['key' => 'users', 'label' => 'U&#380;ytkownicy', 'href' => 'users.php', 'adminOnly' => true],
-        ['key' => 'points', 'label' => 'Punkty', 'href' => 'edit_points.php', 'adminOnly' => true],
+        ['key' => 'dashboard', 'label' => 'Panel', 'href' => 'dashboard.php', 'minLevel' => 1],
+        ['key' => 'profile', 'label' => 'Profil', 'href' => 'profile.php', 'minLevel' => 1],
+        ['key' => 'users', 'label' => 'U&#380;ytkownicy', 'href' => 'users.php', 'minLevel' => 2],
+        ['key' => 'points', 'label' => 'Punkty', 'href' => 'edit_points.php', 'minLevel' => 4],
     ];
 
     echo '<nav class="admin-nav">';
@@ -19,7 +28,7 @@ function admin_nav(string $active = ''): void
     }
 
     foreach ($items as $it) {
-        if ($it['adminOnly'] && $role !== 'admin') {
+        if (role_level($role) < (int) $it['minLevel']) {
             continue;
         }
 
@@ -31,8 +40,8 @@ function admin_nav(string $active = ''): void
     echo '<button class="admin-link admin-theme-toggle" type="button" data-theme-toggle aria-pressed="true">';
     echo '<span data-theme-label>Tryb jasny</span>';
     echo '</button>';
-    if ($username !== '') {
-        echo '<span class="admin-meta">' . htmlspecialchars($username) . '</span>';
+    if ($displayName !== '') {
+        echo '<span class="admin-meta">' . htmlspecialchars($displayName) . '</span>';
     }
     echo '<a class="admin-link" href="logout.php">Wyloguj</a>';
     echo '</nav>';
