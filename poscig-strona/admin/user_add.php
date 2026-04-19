@@ -6,7 +6,7 @@ require __DIR__ . '/_nav.php';
 require_once __DIR__ . '/permissions.php';
 require __DIR__ . '/../config/db.php';
 
-if (($_SESSION['role'] ?? '') !== 'admin') {
+if (!can_access_admin_tools((string) ($_SESSION['role'] ?? ''))) {
     http_response_code(403);
     exit('Brak dostępu');
 }

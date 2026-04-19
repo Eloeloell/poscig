@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 declare(strict_types=1);
 
 require __DIR__ . '/auth.php';
@@ -9,7 +9,7 @@ require __DIR__ . '/../config/db.php';
 $username = (string) ($_SESSION['username'] ?? '');
 $role = (string) ($_SESSION['role'] ?? '');
 $userId = (int) ($_SESSION['user_id'] ?? 0);
-$isAdmin = $role === 'admin';
+$isAdmin = can_access_admin_tools($role);
 
 $profile = [
     'username' => $username,
@@ -45,7 +45,7 @@ if ($userId > 0) {
 
         $username = $profile['username'];
         $role = $profile['role'];
-        $isAdmin = $role === 'admin';
+        $isAdmin = can_access_admin_tools($role);
     }
 }
 
@@ -163,9 +163,9 @@ if ($isAdmin) {
                     <div class="admin-kpi__hint">Widoczne tylko dla administratora.</div>
                 </div>
                 <div class="admin-kpi">
-                    <div class="admin-kpi__label">Punkty</div>
+                    <div class="admin-kpi__label">Zastępy</div>
                     <div class="admin-kpi__value"><?= $pointsTotal === null ? '&mdash;' : (int) $pointsTotal ?></div>
-                    <div class="admin-kpi__hint">Liczba rekordów punktowych.</div>
+                    <div class="admin-kpi__hint">Liczba zastepow punktowych.</div>
                 </div>
                 <div class="admin-kpi">
                     <div class="admin-kpi__label">Historia</div>
@@ -184,7 +184,7 @@ if ($isAdmin) {
             </div>
 
             <div class="admin-tiles">
-                <?php if ($role === 'admin'): ?>
+                <?php if ($isAdmin): ?>
                     <a class="admin-tile" href="users.php">
                         <div class="admin-tile__icon">U</div>
                         <div>

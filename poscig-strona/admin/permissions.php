@@ -18,9 +18,14 @@ function can_manage_all_profiles(string $role): bool
     return role_level($role) >= 2;
 }
 
+function can_access_admin_tools(string $role): bool
+{
+    return role_level($role) >= 3;
+}
+
 function can_edit_other_profile(string $editorRole, string $targetRole): bool
 {
-    if ($editorRole === 'admin') {
+    if (can_access_admin_tools($editorRole)) {
         return true;
     }
 

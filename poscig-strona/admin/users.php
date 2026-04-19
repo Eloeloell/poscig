@@ -12,7 +12,7 @@ if (!can_manage_all_profiles($currentRole)) {
     exit('Brak dostępu');
 }
 
-$isAdmin = $currentRole === 'admin';
+$isAdmin = can_access_admin_tools($currentRole);
 $users = $pdo->query('SELECT id, username, first_name, last_name, harcerski_stopien, instruktorski_stopien, role FROM users ORDER BY username')->fetchAll();
 $csrf = (string) ($_SESSION['csrf_token'] ?? '');
 $currentId = (int) ($_SESSION['user_id'] ?? 0);

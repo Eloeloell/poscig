@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 declare(strict_types=1);
 
 require_once __DIR__ . '/permissions.php';
@@ -18,7 +18,7 @@ function admin_nav(string $active = ''): void
         ['key' => 'dashboard', 'label' => 'Panel', 'href' => 'dashboard.php', 'minLevel' => 1],
         ['key' => 'profile', 'label' => 'Profil', 'href' => 'profile.php', 'minLevel' => 1],
         ['key' => 'users', 'label' => 'Użytkownicy', 'href' => 'users.php', 'minLevel' => 2],
-        ['key' => 'points', 'label' => 'Punkty', 'href' => 'edit_points.php', 'minLevel' => 4],
+        ['key' => 'points', 'label' => 'Punkty', 'href' => 'edit_points.php', 'minLevel' => 3],
     ];
 
     echo '<nav class="admin-nav">';

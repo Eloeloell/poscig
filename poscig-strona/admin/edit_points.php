@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/_nav.php';
+require_once __DIR__ . '/permissions.php';
 require __DIR__ . '/../config/db.php';
 
-if (($_SESSION['role'] ?? '') !== 'admin') {
+if (!can_access_admin_tools((string) ($_SESSION['role'] ?? ''))) {
     http_response_code(403);
     exit('Brak dostępu');
 }
@@ -18,12 +19,12 @@ function quoteIdentifier(string $name): string
 function point_label(string $key): string
 {
     static $labels = [
-        '1' => 'Doliwa',
-        '2' => 'Korsak',
-        '3' => 'Krzywda',
-        'Doliwa' => 'Doliwa',
-        'Korsak' => 'Korsak',
-        'Krzywda' => 'Krzywda',
+    '1' => 'Doliwa',
+    '2' => 'Korsak',
+    '3' => 'Krzywda',
+    'Doliwa' => 'Doliwa',
+    'Korsak' => 'Korsak',
+    'Krzywda' => 'Krzywda',
     ];
 
     return $labels[$key] ?? $key;
